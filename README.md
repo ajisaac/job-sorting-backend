@@ -13,6 +13,8 @@ Should change some of the hardcoded urls particularly in `Database.java`<br>
 where you'll also want to set up your database and alter the class as<br>
 is necessary. 
 
+The `MARIADB_CREDS` is just an environment variable local to your machine.<br>
+
 There's one string in `JobService.java` that should be updated to a<br>
 directory where you'll store the input files.
 
