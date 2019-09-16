@@ -15,6 +15,15 @@ public class Job {
 	private String postDate;
 	private String salary;
 	private String jobState;
+	private String searchTerm;
+
+	public String getSearchTerm() {
+		return searchTerm;
+	}
+
+	public void setSearchTerm(String searchTerm) {
+		this.searchTerm = searchTerm;
+	}
 
 	public String getTitle() {
 		return title;
@@ -88,7 +97,6 @@ public class Job {
 		this.jobState = jobState;
 	}
 
-
 	@Override
 	public String toString() {
 		return "Job{" +
@@ -100,7 +108,8 @@ public class Job {
 				", location='" + location + '\'' +
 				", postDate='" + postDate + '\'' +
 				", salary='" + salary + '\'' +
-				", jobState='" + jobState+ '\'' +
+				", jobState='" + jobState + '\'' +
+				", searchTerm='" + searchTerm + '\'' +
 				'}';
 	}
 
@@ -109,13 +118,14 @@ public class Job {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Job job = (Job) o;
-		return Objects.equals(getUrl(), job.getUrl());
+		return Objects.equals(getTitle(), job.getTitle()) &&
+				Objects.equals(getSummary(), job.getSummary()) &&
+				Objects.equals(getCompany(), job.getCompany()) &&
+				Objects.equals(getLocation(), job.getLocation());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getUrl());
+		return Objects.hash(getTitle(), getSummary(), getCompany(), getLocation());
 	}
-
-
 }

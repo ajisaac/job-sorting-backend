@@ -61,6 +61,11 @@ public class JobsListFromDatabase {
 				} else {
 					job.setTitle(rs.getString("title"));
 				}
+				if (rs.getString("search_term") == null){
+					job.setSearchTerm("searchTerm");
+				} else {
+					job.setSearchTerm(rs.getString("search_term"));
+				}
 
 				l.add(job);
 			}

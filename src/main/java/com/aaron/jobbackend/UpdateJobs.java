@@ -16,7 +16,7 @@ public class UpdateJobs {
 	public void update() {
 		try (Connection connection = Database.getConnection()) {
 			String s = "UPDATE IGNORE job SET url=?, summary=? ,company=? ,location=?" +
-					" ,postdate=? ,salary=? ,jobstate=? ,title=? WHERE id=?";
+					" ,postdate=? ,salary=? ,jobstate=? ,title=?, search_term=? WHERE id=?";
 
 			int batchNum = 100;
 
@@ -36,7 +36,8 @@ public class UpdateJobs {
 					statement.setString(7, j.getJobState());
 				}
 				statement.setString(8, j.getTitle());
-				statement.setLong(9, j.getId());
+				statement.setString(9, j.getSearchTerm());
+				statement.setLong(10, j.getId());
 				statement.addBatch();
 
 				if (++count % batchNum == 0) {

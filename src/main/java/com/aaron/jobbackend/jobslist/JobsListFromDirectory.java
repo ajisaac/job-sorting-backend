@@ -16,6 +16,7 @@ public class JobsListFromDirectory implements JobsListLoader {
 
 	/**
 	 * a construct for loading jobs from an array of json files in directory
+	 *
 	 * @param directory
 	 */
 	public JobsListFromDirectory(String directory) {
@@ -24,6 +25,7 @@ public class JobsListFromDirectory implements JobsListLoader {
 
 	/**
 	 * load the files and return
+	 *
 	 * @return a JobsList with all of the jobs in it
 	 * potentially a JobsList with no jobs
 	 */
@@ -44,9 +46,13 @@ public class JobsListFromDirectory implements JobsListLoader {
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		for (Path p : paths) {
+
 			List<Job> j = objectMapper.readValue(p.toFile(),
 					objectMapper.getTypeFactory().constructCollectionType(ArrayList.class, Job.class));
 
+			final String searchTerm = p.getFileName().toString().split("20")[0];
+
+			j.forEach(job -> job.setSearchTerm(searchTerm));
 			jobs.addAll(j);
 		}
 		return jobs;

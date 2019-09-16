@@ -13,12 +13,17 @@ class JobService {
 	JobService() {
 		// load all of our jobs from json into the database
 		JobsList newJobsList = new JobsListFromDirectory(jobsDirectoryLocation).load();
+		// this just removes based upon hashcode of 4 properties
 		newJobsList.removeDuplicates();
+
+		// hashcode is unique in our database, so if we had an entry in file
+		// and it was identical to an entry in the database, it will ignore
 		new JobsIntoDatabase(newJobsList).insert();
 
 		JobsList dbJobsList = new JobsListFromDatabase().load();
 
 		this.jobsList = dbJobsList.getJobs();
+
 	}
 
 	List<Job> getAllJobs() {
