@@ -1,4 +1,6 @@
-package com.aaron.jobbackend;
+package com.aaron.jobbackend.io;
+
+import com.aaron.jobbackend.pojo.Job;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +20,7 @@ public class UpdateJob {
 
 		try (Connection connection = Database.getConnection()) {
 			String s = "UPDATE IGNORE job SET url=?, summary=? ,company=? ,location=?" +
-					" ,postdate=? ,salary=? ,jobstate=? ,title=?, search_term=? WHERE id=?";
+					" ,postdate=? ,salary=? ,jobstate=? ,title=?, search_term=?, company_location=? WHERE id=?";
 
 			PreparedStatement statement = connection.prepareStatement(s);
 
@@ -35,7 +37,8 @@ public class UpdateJob {
 			}
 			statement.setString(8, job.getTitle());
 			statement.setString(9, job.getSearchTerm());
-			statement.setLong(10, job.getId());
+			statement.setString(10, job.getCompanyLocation());
+			statement.setLong(11, job.getId());
 
 			statement.execute();
 		} catch (SQLException e) {

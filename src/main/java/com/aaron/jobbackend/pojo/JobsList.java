@@ -1,20 +1,14 @@
-package com.aaron.jobbackend.jobslist;
+package com.aaron.jobbackend.pojo;
 
 import java.util.*;
-
-import com.aaron.jobbackend.Job;
 
 public class JobsList {
 	private final List<Job> jobsList;
 
-	JobsList(List<Job> jl) {
+	public JobsList(List<Job> jl) {
 		this.jobsList = jl;
-
 	}
 
-	/**
-	 * Remove duplicates. A duplicate is determined by url.
-	 */
 	public void removeDuplicates() {
 		Set<Job> uj = new HashSet<>(jobsList);
 		jobsList.clear();

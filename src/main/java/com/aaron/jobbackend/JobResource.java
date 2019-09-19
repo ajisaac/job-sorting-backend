@@ -1,6 +1,10 @@
 package com.aaron.jobbackend;
 
 
+import com.aaron.jobbackend.pojo.Company;
+import com.aaron.jobbackend.pojo.Job;
+import com.aaron.jobbackend.pojo.JobIdsList;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -13,11 +17,6 @@ public class JobResource {
 
 	public JobResource(JobService jobService) {
 		this.jobService = jobService;
-	}
-
-	@GET
-	public List<Job> getJobs() {
-		return jobService.getAllJobs();
 	}
 
 	@GET
@@ -40,5 +39,22 @@ public class JobResource {
 		jobService.updateJobStatus(id, jobState);
 	}
 
+	@POST
+	@Path("blacklistcompany/{companyname}")
+	public void blacklistCompany(@PathParam("companyname") String companyName){
+		jobService.blacklistCompany(companyName);
+	}
+
+	@DELETE
+	@Path("blacklistcompany/{companyname}")
+	public void removeBlacklistedCompany(@PathParam("companyname") String companyName){
+		jobService.removeBlacklistedCompany(companyName);
+	}
+
+	@GET
+	@Path("blacklistedcompanies")
+	public List<String> getBlackListedCompanies(){
+		return jobService.getBlackListedCompanies();
+	}
 
 }

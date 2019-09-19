@@ -1,7 +1,8 @@
-package com.aaron.jobbackend;
+package com.aaron.jobbackend.io;
 
 
-import com.aaron.jobbackend.jobslist.JobsList;
+import com.aaron.jobbackend.pojo.Job;
+import com.aaron.jobbackend.pojo.JobsList;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,8 +27,8 @@ public class JobsIntoDatabase {
 		}
 
 		try (Connection connection = Database.getConnection()) {
-			String s = "INSERT IGNORE INTO job (url ,summary ,company ,location ,postdate ,salary ,jobstate ,title, hashcode, search_term)" +
-					" VALUES (?,?,?,?,?,?,?,?,?,?)";
+			String s = "INSERT IGNORE INTO job (url ,summary ,company ,location ,postdate ,salary ,jobstate ,title, hashcode, search_term, company_location)" +
+					" VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
 			PreparedStatement statement = connection.prepareStatement(s);
 
@@ -49,6 +50,7 @@ public class JobsIntoDatabase {
 				statement.setString(8, j.getTitle());
 				statement.setInt(9, j.hashCode());
 				statement.setString(10, j.getSearchTerm());
+				statement.setString(11, j.getCompanyLocation());
 
 				statement.addBatch();
 

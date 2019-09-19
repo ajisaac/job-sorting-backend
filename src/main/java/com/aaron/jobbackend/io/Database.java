@@ -1,4 +1,4 @@
-package com.aaron.jobbackend;
+package com.aaron.jobbackend.io;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

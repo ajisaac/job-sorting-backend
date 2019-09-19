@@ -1,4 +1,4 @@
-package com.aaron.jobbackend;
+package com.aaron.jobbackend.pojo;
 
 import java.util.List;
 import java.util.Objects;
@@ -8,7 +8,7 @@ public class Company {
 	String name;
 	List<Job> jobs;
 
-	public Company(long id,String name, List<Job> jobs) {
+	public Company(long id, String name, List<Job> jobs) {
 		this.id = id;
 		this.name = name;
 		this.jobs = jobs;

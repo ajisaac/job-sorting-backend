@@ -1,7 +1,7 @@
-package com.aaron.jobbackend.jobslist;
+package com.aaron.jobbackend.io;
 
-import com.aaron.jobbackend.Database;
-import com.aaron.jobbackend.Job;
+import com.aaron.jobbackend.pojo.Job;
+import com.aaron.jobbackend.pojo.JobsList;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +16,7 @@ public class JobsListFromDatabase {
 		try (
 				Connection connection = Database.getConnection();
 				PreparedStatement statement = connection.prepareStatement("SELECT * FROM job");
-				ResultSet rs = statement.executeQuery();) {
+				ResultSet rs = statement.executeQuery()) {
 			while (rs.next()) {
 				Job job = new Job();
 
@@ -61,10 +61,15 @@ public class JobsListFromDatabase {
 				} else {
 					job.setTitle(rs.getString("title"));
 				}
-				if (rs.getString("search_term") == null){
+				if (rs.getString("search_term") == null) {
 					job.setSearchTerm("searchTerm");
 				} else {
 					job.setSearchTerm(rs.getString("search_term"));
+				}
+				if (rs.getString("company_location") == null) {
+					job.setCompanyLocation("unknown - unknown");
+				} else {
+					job.setCompanyLocation(rs.getString("company_location"));
 				}
 
 				l.add(job);

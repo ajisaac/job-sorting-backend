@@ -1,4 +1,4 @@
-package com.aaron.jobbackend;
+package com.aaron.jobbackend.pojo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -9,7 +9,7 @@ public class JobIdsList {
 	@JsonProperty("jobIds")
 	List<Long> ids;
 
-	List<Long> getIds() {
+	public List<Long> getIds() {
 		return ids;
 	}
 

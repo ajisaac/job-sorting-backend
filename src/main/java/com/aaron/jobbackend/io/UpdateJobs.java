@@ -1,4 +1,6 @@
-package com.aaron.jobbackend;
+package com.aaron.jobbackend.io;
+
+import com.aaron.jobbackend.pojo.Job;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +18,7 @@ public class UpdateJobs {
 	public void update() {
 		try (Connection connection = Database.getConnection()) {
 			String s = "UPDATE IGNORE job SET url=?, summary=? ,company=? ,location=?" +
-					" ,postdate=? ,salary=? ,jobstate=? ,title=?, search_term=? WHERE id=?";
+					" ,postdate=? ,salary=? ,jobstate=? ,title=?, search_term=?, company_location=? WHERE id=?";
 
 			int batchNum = 100;
 
@@ -37,7 +39,8 @@ public class UpdateJobs {
 				}
 				statement.setString(8, j.getTitle());
 				statement.setString(9, j.getSearchTerm());
-				statement.setLong(10, j.getId());
+				statement.setString(10, j.getCompanyLocation());
+				statement.setLong(11, j.getId());
 				statement.addBatch();
 
 				if (++count % batchNum == 0) {

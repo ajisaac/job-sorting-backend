@@ -1,4 +1,4 @@
-package com.aaron.jobbackend.jobslist;
+package com.aaron.jobbackend.io;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,10 +8,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
-import com.aaron.jobbackend.Job;
+import com.aaron.jobbackend.pojo.Job;
+import com.aaron.jobbackend.pojo.JobsList;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class JobsListFromDirectory implements JobsListLoader {
+public class JobsListFromDirectory {
 	private final String directory;
 
 	/**
@@ -50,9 +51,18 @@ public class JobsListFromDirectory implements JobsListLoader {
 			List<Job> j = objectMapper.readValue(p.toFile(),
 					objectMapper.getTypeFactory().constructCollectionType(ArrayList.class, Job.class));
 
-			final String searchTerm = p.getFileName().toString().split("20")[0];
+			final String searchTerm = p.getFileName().toString().split("___")[0];
+			final String location = searchTerm.split("---")[1];
+			final String term = String.join(" ", searchTerm.split("---")[0].split("-"));
+			final String properLocation = String.join(", ", location.split("-"));
+			final String properSearchTerm = String.join(" - ", term, properLocation);
 
-			j.forEach(job -> job.setSearchTerm(searchTerm));
+			j.forEach(job -> {
+				String compLocation = job.getCompany() + " - " + location;
+				job.setCompanyLocation(compLocation);
+				job.setSearchTerm(properSearchTerm);
+			});
+
 			jobs.addAll(j);
 		}
 		return jobs;
