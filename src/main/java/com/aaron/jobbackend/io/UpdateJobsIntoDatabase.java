@@ -7,11 +7,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-public class UpdateJobs {
+public class UpdateJobsIntoDatabase {
 
 	List<Job> jobs;
 
-	public UpdateJobs(List<Job> jobs) {
+	public UpdateJobsIntoDatabase(List<Job> jobs) {
 		this.jobs = jobs;
 	}
 

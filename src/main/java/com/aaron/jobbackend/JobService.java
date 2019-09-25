@@ -34,7 +34,7 @@ class JobService {
 		for (Job j : jobsList) {
 			if (id.equals(j.getId())) {
 				j.setJobState(state);
-				new UpdateJob(j).update();
+				new UpdateJobIntoDatabase(j).update();
 				break;
 			}
 		}
@@ -52,7 +52,7 @@ class JobService {
 				}
 			}
 		}
-		new UpdateJobs(jobs).update();
+		new UpdateJobsIntoDatabase(jobs).update();
 		this.jobsList = new JobsListFromDatabase().load().getJobs();
 	}
 

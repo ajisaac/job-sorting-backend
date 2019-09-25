@@ -9,10 +9,10 @@ import java.sql.SQLException;
 /**
  * Update the jobs in the database.
  */
-public class UpdateJob {
+public class UpdateJobIntoDatabase {
 	Job job;
 
-	public UpdateJob(Job j) {
+	public UpdateJobIntoDatabase(Job j) {
 		this.job = j;
 	}
 
