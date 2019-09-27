@@ -4,6 +4,7 @@ package com.aaron.jobbackend;
 import com.aaron.jobbackend.pojo.Company;
 import com.aaron.jobbackend.pojo.Job;
 import com.aaron.jobbackend.pojo.JobIdsList;
+import com.aaron.jobbackend.pojo.JobSummary;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -37,6 +38,13 @@ public class JobResource {
 	public void updateSingleJobStatus(@PathParam("state") String jobState,
 	                                  @PathParam("id") Long id) {
 		jobService.updateJobStatus(id, jobState);
+	}
+
+	@POST
+	@Path("updatesinglejobsummary/{id}")
+	public void updateSingleJobSummary(@PathParam("id") Long id, JobSummary jobSummary) {
+
+		jobService.updateJobSummary(id, jobSummary);
 	}
 
 	@POST

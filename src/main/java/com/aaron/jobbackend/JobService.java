@@ -3,6 +3,7 @@ package com.aaron.jobbackend;
 import com.aaron.jobbackend.io.*;
 import com.aaron.jobbackend.pojo.Company;
 import com.aaron.jobbackend.pojo.Job;
+import com.aaron.jobbackend.pojo.JobSummary;
 import com.aaron.jobbackend.pojo.JobsList;
 
 import java.util.*;
@@ -93,6 +94,17 @@ class JobService {
 
 	public void removeBlacklistedCompany(String companyName) {
 		new RemoveBlackListCompanyFromDatabase(companyName).remove();
+	}
+
+	public void updateJobSummary(Long id, JobSummary jobSummary) {
+		for (Job j : jobsList) {
+			if (id.equals(j.getId())) {
+				j.setSummary(jobSummary.getJobSummary());
+				new UpdateJobIntoDatabase(j).update();
+				break;
+			}
+		}
+		this.jobsList = new JobsListFromDatabase().load().getJobs();
 	}
 }
 
