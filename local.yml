@@ -1,8 +1,0 @@
-#configuration can be added here, if needed
-server:
-  applicationConnectors:
-  - type: http
-    port: 8080
-  adminConnectors:
-  - type: http
-    port: 8081
