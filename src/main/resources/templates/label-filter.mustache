@@ -1,0 +1,18 @@
+<div class="search-term-box company">
+    <div class="block-title-header">
+        <h4 class="expandable">Label Filter</h4>
+    </div>
+    <div class="expandable-content">
+        <hr>
+        {{#labels}}
+            <div>
+                <label>
+                    <input type="checkbox"
+                           name="{{key}}"
+                        {{#value}}checked{{/value}}>
+                    {{key}}
+                </label>
+            </div>
+        {{/labels}}
+    </div>
+</div>

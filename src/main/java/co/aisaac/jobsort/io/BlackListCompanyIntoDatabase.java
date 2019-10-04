@@ -18,7 +18,7 @@ public class BlackListCompanyIntoDatabase {
 	/**
 	 * Perform the actual insertion.
 	 */
-	public void insert() {
+	public void insert() throws SQLException {
 		if (companyName == null || companyName.isBlank()) {
 			return;
 		}
@@ -33,8 +33,6 @@ public class BlackListCompanyIntoDatabase {
 			statement.execute();
 			statement.close();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
 		}
 	}
 }

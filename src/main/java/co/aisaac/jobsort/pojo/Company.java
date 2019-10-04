@@ -4,12 +4,10 @@ import java.util.List;
 import java.util.Objects;
 
 public class Company {
-	long id;
 	String name;
 	List<Job> jobs;
 
-	public Company(long id, String name, List<Job> jobs) {
-		this.id = id;
+	public Company(String name, List<Job> jobs) {
 		this.name = name;
 		this.jobs = jobs;
 	}
@@ -22,10 +20,10 @@ public class Company {
 		return jobs;
 	}
 
+
 	@Override
 	public String toString() {
 		return "Company{" +
-				"id=" + id +
 				", name='" + name + '\'' +
 				", jobs=" + jobs +
 				'}';
@@ -36,13 +34,12 @@ public class Company {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Company company = (Company) o;
-		return id == company.id &&
-				Objects.equals(getName(), company.getName()) &&
+		return Objects.equals(getName(), company.getName()) &&
 				Objects.equals(getJobs(), company.getJobs());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, getName(), getJobs());
+		return Objects.hash(getName(), getJobs());
 	}
 }

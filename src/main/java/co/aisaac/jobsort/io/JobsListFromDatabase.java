@@ -11,11 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JobsListFromDatabase {
-	public JobsList load() {
+
+	public static JobsList load() {
 		List<Job> l = new ArrayList<>();
+		String query = "SELECT * FROM job;";
 		try (
 				Connection connection = Database.getConnection();
-				PreparedStatement statement = connection.prepareStatement("SELECT * FROM job");
+				PreparedStatement statement = connection.prepareStatement(query);
 				ResultSet rs = statement.executeQuery()) {
 			while (rs.next()) {
 				Job job = new Job();

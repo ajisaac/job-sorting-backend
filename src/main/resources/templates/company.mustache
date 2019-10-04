@@ -1,0 +1,30 @@
+<div class="company">
+    <div class="company-name-bar">
+        <div class="company-name-bar-title">
+            <h3>{{name}}</h3>
+            <div class="labels">
+                <div class="interviewing-label label">
+                    interviewing
+                </div>
+                <div class="excluded-label label">excluded</div>
+                <div class="ignored-label label">ignored</div>
+            </div>
+        </div>
+        <div class="company-name-bar-controls">
+            <button value="saved" class="primary-btn">save
+            </button>
+            <button value="excluded" class="warning-btn">
+                exclude
+            </button>
+            <button value="ignored">ignored</button>
+            <button class="blacklist-btn" value="DISH Network">
+                blacklist
+            </button>
+        </div>
+    </div>
+    <div class="company-content">
+        {{#jobs}}
+            {{>job}}
+        {{/jobs}}
+    </div>
+</div>

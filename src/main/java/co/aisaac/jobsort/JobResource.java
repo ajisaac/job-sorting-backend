@@ -1,9 +1,9 @@
 package co.aisaac.jobsort;
 
-
 import co.aisaac.jobsort.pojo.Company;
 import co.aisaac.jobsort.pojo.JobIdsList;
 import co.aisaac.jobsort.pojo.JobSummary;
+import co.aisaac.jobsort.pojo.UpdateState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,19 +21,19 @@ public class JobResource {
 
 	@GetMapping("bycompany")
 	public List<Company> getJobsByCompany() {
-		return jobService.getAllCompanies();
+		return jobService.getAllCompanies("");
 	}
 
 	@PostMapping("updatemultiplejobsstatus/{state}")
 	public void updateMultipleJobsStatus(
-			@RequestBody JobIdsList ids, @PathVariable String state) {
-		jobService.updateMultipleJobsStatus(ids.getIds(), state);
+			@RequestBody List<UpdateState> ids, @PathVariable String state) {
+		jobService.updateMultipleJobsStatus(ids, state);
 	}
 
-	@PostMapping("updatesinglejobstatus/{id}/{state}")
-	public void updateSingleJobStatus(@PathVariable long id,
+	@PostMapping("updatesinglejobstatus/{state}")
+	public void updateSingleJobStatus(@RequestBody UpdateState updateState,
 	                                  @PathVariable String state) {
-		jobService.updateJobStatus(id, state);
+		jobService.updateJobStatus(updateState, state);
 	}
 
 	@PostMapping("updatesinglejobsummary/{id}")

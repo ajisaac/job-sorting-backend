@@ -1,0 +1,20 @@
+<div class="search-term-box company">
+    <div class="block-title-header">
+        <h4 class="expandable">Previous Searches</h4>
+    </div>
+    <div class="expandable-content">
+        <hr>
+        {{#previousSearches}}
+            <div>
+                <label>
+                    <input type="checkbox"
+                           name="{{key}}"
+                           {{#value}}
+                               checked
+                           {{/value}}>
+                    {{key}}
+                </label>
+            </div>
+        {{/previousSearches}}
+    </div>
+</div>
