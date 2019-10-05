@@ -1,0 +1,16 @@
+{
+  "name": "job-sort-javascript",
+  "version": "1.0.0",
+  "description": "javascript for the job sort application",
+  "main": "index.js",
+  "scripts": {
+    "babel": "babel --presets es2015 js/main.js -o ~/code/java/jobbackend/src/main/resources/static/js/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1"
+  }
+}
