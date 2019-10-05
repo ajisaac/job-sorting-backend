@@ -1,8 +1,7 @@
 "use strict";
 
 window.onload = function () {
-    var bars = document.querySelectorAll("div.company-name-bar > h3");
-    bars.forEach(function (title) {
+    document.querySelectorAll("div.company-name-bar > h3").forEach(function (title) {
         title.onclick = function () {
             var content = title.closest("div.company-name-bar").nextElementSibling;
             if (content !== null) {
@@ -18,8 +17,7 @@ window.onload = function () {
         };
     });
 
-    var expandableBoxes = document.querySelectorAll(".search-pane");
-    expandableBoxes.forEach(function (eb) {
+    document.querySelectorAll(".search-pane").forEach(function (eb) {
         var title = eb.querySelector("h4.expandable");
         if (title !== null) {
             title.onclick = function () {

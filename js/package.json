@@ -4,7 +4,7 @@
   "description": "javascript for the job sort application",
   "main": "index.js",
   "scripts": {
-    "babel": "babel --presets es2015 js/main.js -o ~/code/java/jobbackend/src/main/resources/static/js/index.js"
+    "babel": "babel --presets es2015 src/main.js -o ../src/main/resources/static/js/index.js"
   },
   "author": "",
   "license": "ISC",
