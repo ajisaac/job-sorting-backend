@@ -1,17 +1,19 @@
-<div class="search-term-box company">
+<div class="search-pane pane">
     <div class="block-title-header">
         <h4 class="expandable">Title Filter</h4>
         <form><input type="text" value="">
             <button class="primary-btn">Add</button>
         </form>
-        <input class="checkbox" name="blockTitleChecked" type="checkbox">
+        <label>
+            Include: <input class="checkbox" name="blockTitleChecked" type="checkbox">
+        </label>
+        <hr>
     </div>
     <div class="expandable-content">
-        <hr>
         {{#titlefilters}}
-        <div>{{.}}
-            <button class="btn-link btn-tiny" value="{{.}}">remove?</button>
-        </div>
+            <div>{{.}}
+                <button class="btn-link btn-tiny" value="{{.}}">remove?</button>
+            </div>
         {{/titlefilters}}
     </div>
 </div>

@@ -1,27 +1,24 @@
 <div class="company">
+
+
     <div class="company-name-bar">
-        <div class="company-name-bar-title">
-            <h3>{{name}}</h3>
+        <h3>{{name}}</h3>
+        <div class="company-controls">
             <div class="labels">
-                <div class="interviewing-label label">
-                    interviewing
-                </div>
-                <div class="excluded-label label">excluded</div>
-                <div class="ignored-label label">ignored</div>
+                <span class="interviewing-label label">interviewing</span>
+                <span class="excluded-label label">excluded</span>
+                <span class="ignored-label label">ignored</span>
+            </div>
+            <div class="company-controls-buttons">
+                <button data-company-action="save" class="btn-link">save</button>
+                <button data-company-action="exclude" class="btn-link">exclude</button>
+                <button data-company-action="ignored" class="btn-link">ignored</button>
+                <button data-company="{{name}}" class="btn-link">blacklist</button>
             </div>
         </div>
-        <div class="company-name-bar-controls">
-            <button value="saved" class="primary-btn">save
-            </button>
-            <button value="excluded" class="warning-btn">
-                exclude
-            </button>
-            <button value="ignored">ignored</button>
-            <button class="blacklist-btn" value="DISH Network">
-                blacklist
-            </button>
-        </div>
     </div>
+
+
     <div class="company-content">
         {{#jobs}}
             {{>job}}

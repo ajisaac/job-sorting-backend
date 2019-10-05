@@ -1,28 +1,22 @@
 package co.aisaac.jobsort;
 
 import co.aisaac.jobsort.io.*;
-import co.aisaac.jobsort.pojo.Company;
-import co.aisaac.jobsort.pojo.Job;
-import co.aisaac.jobsort.pojo.JobSummary;
 import co.aisaac.jobsort.pojo.UpdateState;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
-class JobServiceInMemory implements JobService {
+class JobServiceInMemory{
 
-	private FilterService filterService;
+	private JobService jobService;
 
-	JobServiceInMemory(FilterService filterService) {
-		this.filterService = filterService;
+	JobServiceInMemory(JobService jobService) {
+		this.jobService = jobService;
 		var j = JobsListFromDatabase.load().getJobs();
-		filterService.initFilterService(j);
+		jobService.initFilterService(j);
 	}
 
-	@Override
 	public void updateJobStatus(UpdateState updateState, String state) {
 		//update this jobs status in our database
 		//find the job in our hashMap<list>
@@ -31,7 +25,6 @@ class JobServiceInMemory implements JobService {
 
 	}
 
-	@Override
 	public void updateMultipleJobsStatus(List<UpdateState> ids, String state) {
 		//update all of these in our database in one fell swoop
 		//group them into map<state, list<id>>
@@ -43,53 +36,5 @@ class JobServiceInMemory implements JobService {
 		//for each job we will run it through the filter
 
 	}
-
-	public List<Company> getAllCompanies(String filter) {
-		return filterService.getCompanies(filter);
-	}
-
-	@Override
-	public void updateJobSummary(Long id, JobSummary jobSummary) {
-
-	}
-
-	@Override
-	public void blockTitle(String phrase) throws Exception {
-
-	}
-
-	@Override
-	public void removeBlockTitle(String phrase) {
-
-	}
-
-	@Override
-	public List<String> getBlockTitles() {
-		return null;
-	}
-
-	@Override
-	public void blacklistCompany(String companyName) {
-		// add company to database
-		try {
-			new BlackListCompanyIntoDatabase(companyName).insert();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return;
-		}
-
-		filterService.addBlackListCompany(companyName);
-	}
-
-	@Override
-	public void removeBlacklistedCompany(String companyName) {
-
-	}
-
-	@Override
-	public List<String> getBlackListedCompanies() {
-		return null;
-	}
-
 }
 

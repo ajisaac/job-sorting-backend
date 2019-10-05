@@ -16,13 +16,10 @@ import java.util.Map;
 public class MainController {
 
 	private JobService jobService;
-	private FilterService filterService;
 
 	@Autowired
-	public MainController(JobService jobService,
-	                      FilterService filterService) {
+	public MainController(JobService jobService) {
 		this.jobService = jobService;
-		this.filterService = filterService;
 	}
 
 	@GetMapping("filter/{filter}")
@@ -31,14 +28,14 @@ public class MainController {
 
 		List<Company> companies;
 		if (filter.equals("all")) {
-			companies = jobService.getAllCompanies("");
+			companies = jobService.getCompanies("");
 		} else {
-			companies = jobService.getAllCompanies(filter);
+			companies = jobService.getCompanies(filter);
 		}
 
-		model.put("titlefilters", filterService.getTitleFilters());
-		model.put("labels", filterService.getLabels().entrySet());
-		model.put("previousSearches", filterService.getPreviousSearches().entrySet());
+		model.put("titlefilters", jobService.getTitleFilters());
+		model.put("labels", jobService.getLabels().entrySet());
+		model.put("previousSearches", jobService.getPreviousSearches().entrySet());
 		model.put("numCompanies", companies.size());
 
 		int numJobs = companies.stream()
@@ -48,13 +45,11 @@ public class MainController {
 
 		// our slowdown is the browser trying to render 7000 elements
 		if (filter.equals("all") || filter.equals("ignored")) {
-			companies = companies.subList(0, (Math.min(companies.size(), 20)));
-		} else {
-			companies = companies.subList(0, (Math.min(companies.size(), 50)));
+			companies = companies.subList(0, (Math.min(companies.size(), 200)));
 		}
 		model.put("companies", companies);
 
-		List<String> blc = filterService.getBlackListedCompanies();
+		List<String> blc = jobService.getBlackListedCompanies();
 		model.put("blcompanies", blc);
 
 		return new ModelAndView("index", model);

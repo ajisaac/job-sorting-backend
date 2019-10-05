@@ -1,5 +1,5 @@
 body {
-    background-color: #ab9e8d;
+    background-color: #e0d0ba;
 }
 
 .main {
@@ -9,133 +9,20 @@ body {
 
 .main-panel {
     width: 1100px;
+    border-right: solid black 1px;
 }
 
-.search-term-box {
-    margin-top: 5px;
+.search-pane {
+    margin-top: 20px;
     padding-right: 10px;
-    width: 500px;
-    /*border: 3px solid;*/
 }
 
-.search-term-box h4 {
-    margin: 0px;
+.search-pane h4 {
+    margin: 0;
 }
 
-button {
-    margin: 4px;
-    font-weight: bold;
-    padding: 1px 3px;
-    font-family: monospace;
-    border-radius: 2px;
-    color: black;
-}
-
-button::-moz-focus-inner {
-    border: 0;
-}
-
-button {
-    background-color: #b9ab99;
-    /*color: #CEC2B2;*/
-    color: #313131;
-    margin: 2px;
-    border-color: #313131;
-}
-
-button:hover {
-    cursor: pointer;
-    background-color: #988d7f;
-}
-
-button:active {
-    background-color: #bfb3a6;
-}
-
-.danger-btn {
-    background-color: #FF0000;
-    color: #FFD0D0;
-    margin: 2px;
-    border-color: #FFD0D0;
-}
-
-.danger-btn:hover {
-    background-color: #FF7373;
-    cursor: pointer;
-}
-
-.danger-btn:active {
-    background-color: #b80000;
-}
-
-.warning-btn {
-    background-color: #7A5729;
-    color: #D39B63;
-    margin: 2px;
-    border-color: #D39B63;
-}
-
-.warning-btn:hover {
-    background-color: #99764E;
-    cursor: pointer;
-}
-
-.warning-btn:active {
-    background-color: #543c1c;
-}
-
-.primary-btn {
-    background-color: #009C00;
-    color: #00FF00;
-    margin: 2px;
-    border-color: #00FF00;
-}
-
-.primary-btn:hover {
-    background-color: #00BD00;
-    cursor: pointer;
-}
-
-.primary-btn:active {
-    background-color: #005f00;
-}
-
-.blacklist-btn {
-    background-color: black;
-    color: white;
-    margin: 2px;
-    border-color: black;
-}
-
-.blacklist-btn:hover {
-    background-color: grey;
-    cursor: pointer;
-}
-
-.blacklist-btn:active {
-    background-color: darkgray;
-}
-
-
-.success-btn {
-    background-color: #0000FF;
-    color: #00FFFF;
-    margin: 2px;
-    border-color: #00FFFF;
-}
-
-.success-btn:hover {
-    background-color: #0080FF;
-    cursor: pointer;
-}
-
-.success-btn:active {
-    background-color: #0000b1;
-}
-
-form input {
-    margin-right: 10px;
-    width: 245px;
+input[type="text"] {
+    max-width: 250px;
 }
 
 .btn-link {
@@ -145,21 +32,15 @@ form input {
     color: #0000EE;
     text-decoration: underline;
     cursor: pointer;
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-.btn-tiny {
-    font-size: xx-small;
 }
 
 .btn-link.selected {
     color: #551A8B;
 }
 
-.job-state-filter-class {
-    font-weight: bold;
-}
+/*.job-state-filter-class {*/
+/*    font-weight: bold;*/
+/*}*/
 
 .expandable {
     cursor: pointer;
@@ -170,31 +51,28 @@ form input {
     display: none;
 }
 
-.company {
+.panel {
     margin-top: 5px;
     margin-bottom: 5px;
     margin-right: 5px;
     padding: 7px 15px;
-    border: 3px solid;
-    background-color: #cec2b2;
-    box-shadow: 1px 2px 2px rgba(57, 73, 76, 0.35);
-
 }
 
-.company-name-bar {
+.company-controls {
     display: flex;
     justify-content: space-between;
 }
 
-.company-name-bar-title {
+.company-controls-buttons {
+    margin-right: 20px;
 }
 
-.company-name-bar-controls button {
-    padding-bottom: 0;
-    padding-top: 0;
+.company-name-bar {
+    margin-top: 10px;
 }
 
-.company-name-bar > * {
+.side-panel {
+    width: 400px;
 }
 
 .company h3 {
@@ -203,10 +81,6 @@ form input {
 
 .company h3:hover {
     cursor: pointer;
-}
-
-.company-controls {
-    margin-top: 10px;
 }
 
 .labels {
@@ -223,119 +97,47 @@ form input {
 }
 
 .interviewing-label, .new-label {
-    color: black;
     background-color: yellow;
 }
 
 .ignored-label {
     background-color: #a39482;
-    color: #313131;
 }
 
 .saved-label {
     background-color: #009C00;
-    color: #00FF00;
 }
 
 .excluded-label {
     background-color: #946a32;
-    color: #D39B63;
 }
 
 .applied-label {
     background-color: #0000FF;
-    color: #00FFFF;
+    color: white;
 }
 
 .rejected-label {
     background-color: #FF0000;
-    color: #FFD0D0;
 }
-body {
-    margin: 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.block-title-header {
-    display: flex;
-    align-items: center;
-}
-
-.block-title-header .checkbox {
-    margin-left: 14px;
-    transform: scale(2);
-}
-
-.block-title-header h4 {
-    flex-grow: 1;
-}
-
-.block-title-header button {
-    line-height: 22px;
-    margin: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-}
-
-
-/*TODO complete redesign everything*/
-
 
 .job {
-    margin-top: 20px;
-    margin-bottom: 30px;
-    display: flex;
-    justify-content: space-between;
+    margin: 20px;
 }
 
-.job-title {
-    display: flex;
+.job-title a {
+    font-size: large;
 }
 
-.job-title .label {
-    margin-left: 0;
-    margin-right: 10px;
-}
-
-.job-post {
-    flex-grow: 1;
-    margin-right: 50px;
-}
-
-.edit-btn {
-    line-height: 0;
-    margin-left: 20px;
-}
-
-textarea {
-    width: 100%;
-    resize: vertical;
-}
-
-.summary {
-    text-align: justify;
-}
-
-.post-date {
+.job-title div {
     margin-top: 5px;
 }
 
-.controls {
-    width: 110px;
-    margin-left: 10px;
-    margin-right: 5px;
-    font-family: monospace;
+/*textarea {*/
+/*    width: 100%;*/
+/*    resize: vertical;*/
+/*}*/
+
+.job pre {
+    white-space: pre-wrap;
 }
-
-.controls button {
-    padding: 0;
-    margin-bottom: 0;
-    margin-right: 10px;
-    min-width: 120px;
-}
-
-
-
-
-
