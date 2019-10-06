@@ -6,7 +6,9 @@
                href="{{url}}">{{title}}
                 - {{location}}</a>
             <div>
-                <button value="edit" class="btn-link">edit</button>
+                <button data-job-edit="{{id}}" value="edit" class="btn-link">
+                    edit
+                </button>
                 <button data-job-action="save" data-job-id="{{id}}"
                         class="btn-link">save
                 </button>
@@ -26,9 +28,7 @@
         </div>
         <div>
             <div class="summary">
-                <div>
-                    <pre>{{summary}}</pre>
-                </div>
+                <pre>{{summary}}</pre>
             </div>
         </div>
         <div class="post-date">{{postDate}}</div>

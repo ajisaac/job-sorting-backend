@@ -133,11 +133,24 @@ input[type="text"] {
     margin-top: 5px;
 }
 
-/*textarea {*/
-/*    width: 100%;*/
-/*    resize: vertical;*/
-/*}*/
+textarea {
+    width: 100%;
+    resize: vertical;
+}
 
 .job pre {
     white-space: pre-wrap;
+}
+
+.summary-button-holder button {
+    margin-right: 7px;
+}
+
+.summary textarea, .summary pre {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.block-title-header {
+    margin-bottom: 10px;
 }
