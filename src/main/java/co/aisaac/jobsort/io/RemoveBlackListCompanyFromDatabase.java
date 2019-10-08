@@ -18,7 +18,7 @@ public class RemoveBlackListCompanyFromDatabase {
 	/**
 	 * Perform the actual insertion.
 	 */
-	public void remove() {
+	public void remove() throws SQLException {
 		if (companyName == null || companyName.isBlank()) {
 			return;
 		}
@@ -33,8 +33,6 @@ public class RemoveBlackListCompanyFromDatabase {
 			statement.execute();
 			statement.close();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
 		}
 	}
 }

@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +32,10 @@ public class JobResource {
 		List<String> validStates = new ArrayList<>();
 		validStates.add("ignored");
 		validStates.add("rejected");
-		validStates.add("exclude");
+		validStates.add("excluded");
 		validStates.add("applied");
-		validStates.add("save");
+		validStates.add("saved");
+		validStates.add("interviewing");
 
 		if (!validStates.contains(state))
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -54,8 +54,8 @@ public class JobResource {
 	                                              @RequestBody List<Long> ids) {
 		List<String> validStates = new ArrayList<>();
 		validStates.add("ignored");
-		validStates.add("exclude");
-		validStates.add("save");
+		validStates.add("excluded");
+		validStates.add("saved");
 
 		if (!validStates.contains(state))
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -71,8 +71,31 @@ public class JobResource {
 	@PostMapping("summary/{id}")
 	public ResponseEntity updateSummary(@PathVariable Long id,
 	                                    @RequestBody Summary summary) {
-		jobService.updateSummary(id, summary.getSummary());
+		try {
+			jobService.updateSummary(id, summary.getSummary());
+		} catch (Exception e) {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}
 
+	@PostMapping("blacklist/{company}")
+	public ResponseEntity blacklistCompany(@PathVariable String company) {
+		try {
+			jobService.addBlackListCompany(company);
+		} catch (Exception ex) {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity(HttpStatus.NO_CONTENT);
+	}
+
+	@DeleteMapping("blacklist/{company}")
+	public ResponseEntity removeBlacklistCompany(@PathVariable String company) {
+		try {
+			jobService.removeBlackListCompany(company);
+		} catch (Exception ex) {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity(HttpStatus.NO_CONTENT);
+	}
 }

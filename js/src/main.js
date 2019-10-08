@@ -140,6 +140,62 @@ window.onload = () => {
         }
     });
 
+    document.querySelectorAll("button[data-company]").forEach(bl => {
+        bl.onclick = async () => {
+            try {
+                let company = bl.dataset.company;
+                if (!company) return;
+
+                let url = '/jobs/blacklist/' + company;
+                await postData(url, {});
+
+                bl.closest(".company").remove();
+
+                let blc = document.querySelector("div[data-blacklist-companies]");
+                if (!blc) return;
+
+                let d = document.createElement("div");
+                d.textContent = company;
+
+                let b = document.createElement("button");
+                b.classList.add("btn-link", "btn-tiny");
+                b.value = company;
+                b.innerText = "remove?";
+                b.onclick = async () => {
+                    await deleteData(url);
+                    let a = b.closest("div");
+                    if (!a) return;
+                    a.remove();
+                };
+
+                d.appendChild(b);
+                blc.appendChild(d);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    });
+
+    document.querySelectorAll("button[data-remove-blacklisted-company]").forEach(rblc => {
+            rblc.onclick = async () => {
+                try {
+                    let company = rblc.value;
+                    if (!company) return;
+                    console.log(company);
+                    let url = '/jobs/blacklist/' + company;
+                    await deleteData(url);
+                    let a = rblc.closest("div");
+                    if (!a) return;
+                    a.remove();
+                } catch (err) {
+                    console.log(err);
+                }
+            };
+        }
+    )
+    ;
+
+
     function lowerJobCount(amount = 0) {
         if (!amount || isNaN(amount)) return;
         let num = parseInt(numJobsSpan.textContent);
@@ -179,7 +235,27 @@ window.onload = () => {
         return response;
     }
 
-    // post to the server to change the state of one job
+    async function deleteData(url = '') {
+        const response = await fetch(url, {
+            method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                // 'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrer: 'no-referrer', // no-referrer, *client
+            // body: JSON.stringify(data) // body data type must match "Content-Type" header
+        });
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return response;
+    }
+
+// post to the server to change the state of one job
     async function changeJobState(sb, state) {
         if (!sb || !state) throw Error("Missing job or state.");
         try {
@@ -205,7 +281,7 @@ window.onload = () => {
         }
     }
 
-    // post to the server to change the state of multiple jobs
+// post to the server to change the state of multiple jobs
     async function changeMultipleJobState(ca, state) {
         if (!ca || !state) throw Error("Missing company or state.");
         try {
@@ -234,4 +310,5 @@ window.onload = () => {
         }
     }
 
-};
+}
+;

@@ -4,14 +4,15 @@
     <span data-num-jobs>{{numJobs}}</span><span> jobs</span>
     <hr>
     <span>Filter by state: </span>
-    <a href="/jobs/filter/new">New</a>
-    <a href="/jobs/filter/saved" class="">Saved</a>
-    <a href="/jobs/filter/applied" class="">Applied</a>
-    <a href="/jobs/filter/interviewing" class="">Interviewing</a>
-    <a href="/jobs/filter/excluded" class="">Excluded</a>
-    <a href="/jobs/filter/rejected" class="">Rejected</a>
-    <a href="/jobs/filter/ignored" class="">Ignored</a>
-    <a href="/jobs/filter/all" class="">All</a>
+
+    <a href="/jobs/filter/new" class="{{^new}}not-{{/new}}selected">New</a>
+    <a href="/jobs/filter/saved" class="{{^saved}}not-{{/saved}}selected">Saved</a>
+    <a href="/jobs/filter/applied" class="{{^applied}}not-{{/applied}}selected">Applied</a>
+    <a href="/jobs/filter/interviewing" class="{{^interviewing}}not-{{/interviewing}}selected">Interviewing</a>
+    <a href="/jobs/filter/excluded" class="{{^excluded}}not-{{/excluded}}selected">Excluded</a>
+    <a href="/jobs/filter/rejected" class="{{^rejected}}not-{{/rejected}}selected">Rejected</a>
+    <a href="/jobs/filter/ignored" class="{{^ignored}}not-{{/ignored}}selected">Ignored</a>
+    <a href="/jobs/filter/all" class="{{^all}}not-{{/all}}selected">All</a>
     <hr>
     <form>
         <div>

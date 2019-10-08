@@ -7,9 +7,10 @@
         {{#labels}}
             <div>
                 <label>
-                    <input type="checkbox"
+                    <input data-label-filter="{{key}}"
+                           type="checkbox"
                            name="{{key}}"
-                        {{#value}}checked{{/value}}>
+                           {{#value}}checked{{/value}}>
                     {{key}}
                 </label>
             </div>

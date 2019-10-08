@@ -1,9 +1,6 @@
 package co.aisaac.jobsort;
 
-import co.aisaac.jobsort.io.BlackListCompaniesFromDatabase;
-import co.aisaac.jobsort.io.BlockTitlesFromDatabase;
-import co.aisaac.jobsort.io.UpdateJobStateIntoDatabase;
-import co.aisaac.jobsort.io.UpdateJobStatesIntoDatabase;
+import co.aisaac.jobsort.io.*;
 import co.aisaac.jobsort.pojo.Company;
 import co.aisaac.jobsort.pojo.Job;
 import org.springframework.stereotype.Service;
@@ -98,14 +95,19 @@ public class JobService {
 				.collect(Collectors.toList());
 	}
 
-
-	public void addBlackListCompany(String companyName) {
-		// we will add this company and thus kick off filtering
-
+	public void addBlackListCompany(String companyName) throws SQLException {
+		new BlackListCompanyIntoDatabase(companyName).insert();
+		blackListedCompanies.add(companyName);
 	}
 
-	public void removeBlackListCompany(String companyName) {
-		// undo the blacklisting
+	public void removeBlackListCompany(String companyName) throws SQLException {
+		new RemoveBlackListCompanyFromDatabase(companyName).remove();
+		for (int i = 0, blackListedCompaniesSize = blackListedCompanies.size(); i < blackListedCompaniesSize; i++) {
+			String blackListedCompany = blackListedCompanies.get(i);
+			if (blackListedCompany.equalsIgnoreCase(companyName)) {
+				blackListedCompanies.remove(blackListedCompany);
+			}
+		}
 	}
 
 	public List<String> getBlackListedCompanies() {
@@ -200,9 +202,22 @@ public class JobService {
 		jobs.get(state).addAll(idsJobList);
 	}
 
-	public void updateSummary(Long id, String summary) {
-		System.out.println("Update Summary for " + id + " " + summary);
+	public void updateSummary(Long id, String summary) throws Exception {
+		Job job = null;
+		// update database
+		for (Map.Entry<String, List<Job>> stringListEntry : jobs.entrySet()) {
+			for (Job j : stringListEntry.getValue()) {
+				if (j.getId() == id) {
+					job = j;
+				}
+			}
+		}
+		if (job == null) throw new Exception();
+
+		job.setSummary(summary);
+		new UpdateJobIntoDatabase(job).update();
+
+		// update jobs list
+
 	}
-
-
 }

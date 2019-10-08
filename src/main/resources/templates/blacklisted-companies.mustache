@@ -3,10 +3,12 @@
         <hr>
         <h4 class="expandable">Blacklisted Companies</h4>
     </div>
-    <div class="expandable-content">
+    <div data-blacklist-companies class="expandable-content">
         {{#blcompanies}}
-            <div>{{.}}
-                <button class="btn-link btn-tiny" value="{{.}}">remove?
+            <div data-blacklisted-company="{{.}}">{{.}}
+                <button class="btn-link btn-tiny"
+                        data-remove-blacklisted-company=""
+                        value="{{.}}"> remove?
                 </button>
             </div>
         {{/blcompanies}}

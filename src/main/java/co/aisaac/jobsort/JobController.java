@@ -33,6 +33,7 @@ public class JobController {
 			companies = jobService.getCompanies(filter);
 		}
 
+		model.put(filter, filter);
 		model.put("state", filter.toUpperCase());
 		model.put("titlefilters", jobService.getTitleFilters());
 		model.put("labels", jobService.getLabels().entrySet());

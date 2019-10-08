@@ -38,9 +38,12 @@ input[type="text"] {
     color: #551A8B;
 }
 
-/*.job-state-filter-class {*/
-/*    font-weight: bold;*/
-/*}*/
+a.selected{
+    color: #551A8B;
+}
+a.not-selected{
+    color: #0000EE;
+}
 
 .expandable {
     cursor: pointer;

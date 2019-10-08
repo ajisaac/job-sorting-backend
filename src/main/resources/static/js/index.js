@@ -139,6 +139,59 @@ window.onload = function () {
         };
     });
 
+    document.querySelectorAll("button[data-company]").forEach(function (bl) {
+        bl.onclick = async function () {
+            try {
+                var company = bl.dataset.company;
+                if (!company) return;
+
+                var url = '/jobs/blacklist/' + company;
+                await postData(url, {});
+
+                bl.closest(".company").remove();
+
+                var blc = document.querySelector("div[data-blacklist-companies]");
+                if (!blc) return;
+
+                var d = document.createElement("div");
+                d.textContent = company;
+
+                var b = document.createElement("button");
+                b.classList.add("btn-link", "btn-tiny");
+                b.value = company;
+                b.innerText = "remove?";
+                b.onclick = async function () {
+                    await deleteData(url);
+                    var a = b.closest("div");
+                    if (!a) return;
+                    a.remove();
+                };
+
+                d.appendChild(b);
+                blc.appendChild(d);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+    });
+
+    document.querySelectorAll("button[data-remove-blacklisted-company]").forEach(function (rblc) {
+        rblc.onclick = async function () {
+            try {
+                var company = rblc.value;
+                if (!company) return;
+                console.log(company);
+                var url = '/jobs/blacklist/' + company;
+                await deleteData(url);
+                var a = rblc.closest("div");
+                if (!a) return;
+                a.remove();
+            } catch (err) {
+                console.log(err);
+            }
+        };
+    });
+
     function lowerJobCount() {
         var amount = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
 
@@ -178,6 +231,28 @@ window.onload = function () {
             redirect: 'follow', // manual, *follow, error
             referrer: 'no-referrer', // no-referrer, *client
             body: JSON.stringify(data) // body data type must match "Content-Type" header
+        });
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return response;
+    }
+
+    async function deleteData() {
+        var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+        var response = await fetch(url, {
+            method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                // 'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrer: 'no-referrer' // no-referrer, *client
+            // body: JSON.stringify(data) // body data type must match "Content-Type" header
         });
         if (!response.ok) {
             throw Error(response.statusText);
