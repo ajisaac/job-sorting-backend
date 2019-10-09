@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +77,19 @@ public class JobResource {
 		} catch (Exception e) {
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
+		return new ResponseEntity(HttpStatus.NO_CONTENT);
+	}
+
+	@PostMapping("titlefilter/{checked}")
+	public ResponseEntity titleFilterChecked(@PathVariable boolean checked){
+		jobService.setTitleFilterChecked(checked);
+		return new ResponseEntity(HttpStatus.NO_CONTENT);
+	}
+
+	@PostMapping("labelfilter/{filter}/{checked}")
+	public ResponseEntity labelFilterChecked(@PathVariable String filter,
+	                                         @PathVariable boolean checked){
+		jobService.setLabelFilterChecked(filter, checked);
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}
 

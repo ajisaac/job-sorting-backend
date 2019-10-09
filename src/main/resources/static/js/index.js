@@ -1,9 +1,8 @@
 "use strict";
 
 window.onload = function () {
-    var numJobsSpan = document.querySelector("span[data-num-jobs]");
-    var numCompaniesSpan = document.querySelector("span[data-num-companies]");
 
+    // hide show contents of a company
     document.querySelectorAll("div.company-name-bar > h3").forEach(function (title) {
         title.onclick = function () {
             var content = title.closest("div.company-name-bar").nextElementSibling;
@@ -20,6 +19,7 @@ window.onload = function () {
         };
     });
 
+    // hide show search pane contents
     document.querySelectorAll(".search-pane").forEach(function (eb) {
         var title = eb.querySelector("h4.expandable");
         if (title !== null) {
@@ -37,20 +37,55 @@ window.onload = function () {
         }
     });
 
+    // click on job state button for job
     document.querySelectorAll("button[data-job-action]").forEach(function (sb) {
-        var actionType = sb.dataset.jobAction;
+        var state = sb.dataset.jobAction;
         sb.onclick = async function () {
-            await changeJobState(sb, actionType);
+            if (!sb || !state) throw Error("Missing job or state.");
+            try {
+
+                var id = sb.dataset.jobId;
+                if (!id) return;
+
+                var url = '/jobs/state/' + state + '/' + id;
+                await postData(url, {});
+
+                location.reload();
+            } catch (error) {
+                console.log(error);
+            }
         };
     });
 
+    // click on job state button for company
     document.querySelectorAll("button[data-company-action]").forEach(function (ca) {
-        var actionType = ca.dataset.companyAction;
         ca.onclick = async function () {
-            await changeMultipleJobState(ca, actionType);
+            var state = ca.dataset.companyAction;
+            if (!ca || !state) throw Error("Missing company or state.");
+            try {
+
+                // get all our job ids
+                var jobs = Array.from(ca.closest(".company").querySelectorAll("div[data-job-id]"));
+
+                var jobIds = jobs.map(function (j) {
+                    var id = j.dataset.jobId;
+                    if (id) {
+                        return id;
+                    }
+                    return 0;
+                });
+
+                var url = '/jobs/multiplestates/' + state;
+                await postData(url, jobIds);
+
+                location.reload();
+            } catch (error) {
+                console.log(error);
+            }
         };
     });
 
+    // edit the contents of a job
     document.querySelectorAll("button[data-job-edit]").forEach(function (eb) {
         eb.onclick = function () {
             try {
@@ -139,6 +174,7 @@ window.onload = function () {
         };
     });
 
+    // blacklist a company
     document.querySelectorAll("button[data-company]").forEach(function (bl) {
         bl.onclick = async function () {
             try {
@@ -148,71 +184,64 @@ window.onload = function () {
                 var url = '/jobs/blacklist/' + company;
                 await postData(url, {});
 
-                bl.closest(".company").remove();
-
-                var blc = document.querySelector("div[data-blacklist-companies]");
-                if (!blc) return;
-
-                var d = document.createElement("div");
-                d.textContent = company;
-
-                var b = document.createElement("button");
-                b.classList.add("btn-link", "btn-tiny");
-                b.value = company;
-                b.innerText = "remove?";
-                b.onclick = async function () {
-                    await deleteData(url);
-                    var a = b.closest("div");
-                    if (!a) return;
-                    a.remove();
-                };
-
-                d.appendChild(b);
-                blc.appendChild(d);
+                location.reload();
             } catch (err) {
                 console.log(err);
             }
         };
     });
 
+    // remove a blacklisted company
     document.querySelectorAll("button[data-remove-blacklisted-company]").forEach(function (rblc) {
         rblc.onclick = async function () {
             try {
                 var company = rblc.value;
                 if (!company) return;
-                console.log(company);
+
                 var url = '/jobs/blacklist/' + company;
                 await deleteData(url);
-                var a = rblc.closest("div");
-                if (!a) return;
-                a.remove();
+
+                location.reload();
             } catch (err) {
                 console.log(err);
             }
         };
     });
 
-    function lowerJobCount() {
-        var amount = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    // click the include button for the title filter search pane
+    document.querySelector("input[name='blockTitleChecked']").onclick = async function (e) {
+        try {
 
-        if (!amount || isNaN(amount)) return;
-        var num = parseInt(numJobsSpan.textContent);
-        if (!num || isNaN(num)) return;
+            var checked = e.target.checked;
+            if (checked === undefined || checked === null) return;
 
-        num = num - amount;
-        numJobsSpan.textContent = num.toString();
-    }
+            var url = '/jobs/titlefilter/' + checked;
+            await postData(url, {});
 
-    function lowerCompanyCount() {
-        var amount = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+            location.reload();
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
-        if (!amount || isNaN(amount)) return;
-        var num = parseInt(numCompaniesSpan.textContent);
-        if (!num || isNaN(num)) return;
+    // select one of the label filter inputs
+    document.querySelectorAll("input[data-label-filter]").forEach(function (dlf) {
+        dlf.onclick = async function () {
+            try {
+                var checked = dlf.checked;
+                if (checked === undefined || checked === null) return;
 
-        num = num - amount;
-        numCompaniesSpan.textContent = num.toString();
-    }
+                var filter = dlf.dataset.labelFilter;
+                if (!filter) return;
+
+                var url = '/jobs/labelfilter/' + filter + "/" + checked;
+                await postData(url, {});
+                location.reload();
+            } catch (err) {
+                console.log(err);
+            }
+        };
+    });
 
     async function postData() {
         var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
@@ -258,58 +287,5 @@ window.onload = function () {
             throw Error(response.statusText);
         }
         return response;
-    }
-
-    // post to the server to change the state of one job
-    async function changeJobState(sb, state) {
-        if (!sb || !state) throw Error("Missing job or state.");
-        try {
-
-            var id = sb.dataset.jobId;
-            if (!id) return;
-
-            var url = '/jobs/state/' + state + '/' + id;
-            await postData(url, {});
-
-            var compContent = sb.closest(".company-content");
-            var company = sb.closest(".company");
-
-            sb.closest("div[data-job-id='" + id + "']").remove();
-            if (compContent.children.length <= 0) {
-                company.remove();
-                lowerCompanyCount(1);
-            }
-            lowerJobCount(1);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    // post to the server to change the state of multiple jobs
-    async function changeMultipleJobState(ca, state) {
-        if (!ca || !state) throw Error("Missing company or state.");
-        try {
-
-            // get all our job ids
-            var jobs = Array.from(ca.closest(".company").querySelectorAll("div[data-job-id]"));
-
-            var jobIds = jobs.map(function (j) {
-                var id = j.dataset.jobId;
-                if (id) {
-                    return id;
-                }
-                return 0;
-            });
-
-            var url = '/jobs/multiplestates/' + state;
-            await postData(url, jobIds);
-
-            lowerJobCount(jobs.length);
-            lowerCompanyCount(1);
-
-            ca.closest(".company").remove();
-        } catch (error) {
-            console.log(error);
-        }
     }
 };

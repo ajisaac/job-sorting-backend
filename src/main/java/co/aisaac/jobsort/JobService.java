@@ -3,6 +3,7 @@ package co.aisaac.jobsort;
 import co.aisaac.jobsort.io.*;
 import co.aisaac.jobsort.pojo.Company;
 import co.aisaac.jobsort.pojo.Job;
+import co.aisaac.jobsort.pojo.JobsList;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -18,16 +19,18 @@ import java.util.stream.Collectors;
 @Service
 public class JobService {
 
+	// <JobStatus, List of jobs>
 	private Map<String, List<Job>> jobs;
 
-	// these are known
+	// <label name, is selected>
 	private Map<String, Boolean> labels = new HashMap<>();
 
 	// inferred this from our jobs list
 	private Map<String, Boolean> previousSearches = new HashMap<>();
 
 	// these are stored
-	private List<String> titleFitler = new ArrayList<>();
+	private List<String> titleFitlers = new ArrayList<>();
+	private boolean titleFilterChecked = false;
 
 	// these are stored
 	private List<String> blackListedCompanies = new ArrayList<>();
@@ -37,25 +40,39 @@ public class JobService {
 	private List<String> searchTerms = new ArrayList<>();
 
 	public JobService() {
-	}
 
-	public void initFilterService(List<Job> jlist) {
+		// 1 load our db jobs
+		List<Job> jlist = JobsListFromDatabase.load().getJobs();
 
+		// 2 load up our files and get the unique jobs
+		JobsList fromDir = new JobsListFromDirectory("/home/aaron/documents/jobsearch").load();
+		fromDir.removeDuplicates();
+		fromDir.getUnique(jlist);
+
+		// 3 push the new jobs into the database
+		new JobsIntoDatabase(fromDir).insert();
+
+		// 4 reload from the database
+		jlist = JobsListFromDatabase.load().getJobs();
+
+		// 5 map them by jobStatus for easy access by certain operations
 		jobs = jlist.stream()
 				.collect(Collectors.groupingBy(Job::getJobState));
 
+		// 6 derive our previous searches into a set
 		Set<String> s = jlist.stream()
 				.map(Job::getSearchTerm)
 				.collect(Collectors.toSet());
-
-
 		previousSearches = s.stream()
 				.collect(Collectors.toMap(Function.identity(), j -> false));
 
+		// 7 load up our blacklisted companies
 		blackListedCompanies = new BlackListCompaniesFromDatabase().load();
 
-		titleFitler = new BlockTitlesFromDatabase().load();
+		// 8 load up our blocked titles
+		titleFitlers = new BlockTitlesFromDatabase().load();
 
+		// 9 prepare the labels for our label filter
 		initLabels();
 	}
 
@@ -69,30 +86,65 @@ public class JobService {
 		labels.put("ignored", false);
 	}
 
+	// this runs each time we load the page
 	public List<Company> getCompanies(String filter) {
 
-		List<Job> jList;
+		// 1 make a list of all our jobs regardless of status
+		List<Job> jList = new ArrayList<>();
+		this.jobs.values().forEach(jList::addAll);
 
-		if (filter.equals("")) {
-			jList = new ArrayList<>();
-			this.jobs.values().forEach(jList::addAll);
-		} else {
-			jList = this.jobs.get(filter);
-		}
-
-		jList = filterBlackListCompanies(jList);
-
-		return jobsToCompanies(jList);
-
-	}
-
-	private List<Company> jobsToCompanies(List<Job> jobs) {
-		//group by company
-		return jobs.stream()
+		// 2 group them up into companies
+		List<Company> companies = jList.stream()
 				.collect(Collectors.groupingBy(Job::getCompany))
 				.entrySet().stream()
 				.map(e -> new Company(e.getKey(), e.getValue()))
 				.collect(Collectors.toList());
+
+		// get the checked label filters
+		List<String> f = this.labels
+				.entrySet().stream()
+				.filter(Map.Entry::getValue)
+				.map(Map.Entry::getKey)
+				.collect(Collectors.toList());
+
+		if (f.size() != 0) {
+
+			// 2.5 get rid of companies that don't match the filters label filters
+			companies = companies.stream()
+					.filter(company -> {
+						for (String s : company.getLabels()) {
+							if (f.contains(s)) {
+								return true;
+							}
+						}
+						return false;
+					})
+					.collect(Collectors.toList());
+		}
+
+		// 3 filter out our blacklisted companies
+		companies = companies.stream()
+				.filter(company -> !blackListedCompanies.contains(company.getName()))
+				.collect(Collectors.toList());
+
+		// 4 further filter by jobState
+		if (!filter.equals("")) {
+			companies.forEach(company -> company.filter(filter));
+		}
+
+		// 5 run through the title filter if we're checked
+		// if not checked we'll allow them to be included
+		if (titleFilterChecked) {
+			companies.forEach(company -> company.applyTitleFilters(titleFitlers));
+		}
+
+		// 6 get rid of companies without jobs
+		companies = companies.stream()
+				.filter(company -> company.getJobs().size() > 0)
+				.collect(Collectors.toList());
+
+
+		return companies;
 	}
 
 	public void addBlackListCompany(String companyName) throws SQLException {
@@ -114,12 +166,6 @@ public class JobService {
 		return this.blackListedCompanies;
 	}
 
-	private List<Job> filterBlackListCompanies(List<Job> jobs) {
-		return jobs.stream()
-				.filter(j -> !blackListedCompanies.contains(j.getCompany()))
-				.collect(Collectors.toList());
-	}
-
 	public Map<String, Boolean> getPreviousSearches() {
 		return previousSearches;
 	}
@@ -129,7 +175,19 @@ public class JobService {
 	}
 
 	public List<String> getTitleFilters() {
-		return titleFitler;
+		return titleFitlers;
+	}
+
+	public void setLabelFilterChecked(String filter, boolean checked) {
+		this.labels.put(filter, checked);
+	}
+
+	public boolean isTitleFilterChecked() {
+		return titleFilterChecked;
+	}
+
+	public void setTitleFilterChecked(boolean checked) {
+		this.titleFilterChecked = checked;
 	}
 
 	public void updateJobStatus(long id, String state) throws Exception {
@@ -220,4 +278,6 @@ public class JobService {
 		// update jobs list
 
 	}
+
+
 }

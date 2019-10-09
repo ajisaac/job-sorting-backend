@@ -33,6 +33,7 @@ public class JobController {
 			companies = jobService.getCompanies(filter);
 		}
 
+		model.put("titleFilterChecked", jobService.isTitleFilterChecked());
 		model.put(filter, filter);
 		model.put("state", filter.toUpperCase());
 		model.put("titlefilters", jobService.getTitleFilters());
@@ -56,4 +57,6 @@ public class JobController {
 
 		return new ModelAndView("index", model);
 	}
+
+
 }

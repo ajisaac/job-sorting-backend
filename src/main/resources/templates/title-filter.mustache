@@ -6,7 +6,13 @@
             <button class="primary-btn">Add</button>
         </form>
         <label>
-            Include: <input class="checkbox" name="blockTitleChecked" type="checkbox">
+            Include: <input class="checkbox"
+                            name="blockTitleChecked"
+                            type="checkbox"
+                            autocomplete="off"
+            {{#titleFilterChecked}}
+                            checked
+            {{/titleFilterChecked}}>
         </label>
     </div>
     <div class="expandable-content">

@@ -5,15 +5,20 @@
         <h3>{{name}}</h3>
         <div class="company-controls">
             <div class="labels">
-                <span class="interviewing-label label">interviewing</span>
-                <span class="excluded-label label">excluded</span>
-                <span class="ignored-label label">ignored</span>
+                {{#labels}}
+                    <span class="{{.}}-label label">{{.}}</span>
+                {{/labels}}
             </div>
             <div class="company-controls-buttons">
-                <button data-company-action="saved" class="btn-link">saved</button>
-                <button data-company-action="excluded" class="btn-link">excluded</button>
-                <button data-company-action="ignored" class="btn-link">ignored</button>
-                <button data-company="{{name}}" class="btn-link">blacklist</button>
+                <button data-company-action="saved" class="btn-link">saved
+                </button>
+                <button data-company-action="excluded" class="btn-link">
+                    excluded
+                </button>
+                <button data-company-action="ignored" class="btn-link">ignored
+                </button>
+                <button data-company="{{name}}" class="btn-link">blacklist
+                </button>
             </div>
         </div>
     </div>

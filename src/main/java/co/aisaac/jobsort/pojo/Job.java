@@ -106,6 +106,10 @@ public class Job {
 		this.jobState = jobState;
 	}
 
+	public boolean urlMatches(String url) {
+		return this.url.equalsIgnoreCase(url);
+	}
+
 	@Override
 	public String toString() {
 		return "Job{" +
