@@ -280,4 +280,8 @@ public class JobService {
 	}
 
 
+	public void insertJob(Job job) throws SQLException {
+		new InsertJobIntoDatabase(job).insert();
+		this.jobs.get(job.getJobState()).add(job);
+	}
 }

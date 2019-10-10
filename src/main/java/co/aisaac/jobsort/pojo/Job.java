@@ -16,15 +16,6 @@ public class Job {
 	private String salary;
 	private String jobState;
 	private String searchTerm;
-	private String companyLocation;
-
-	public String getCompanyLocation() {
-		return companyLocation;
-	}
-
-	public void setCompanyLocation(String companyLocation) {
-		this.companyLocation = companyLocation;
-	}
 
 	public String getSearchTerm() {
 		return searchTerm;
@@ -123,7 +114,6 @@ public class Job {
 				", salary='" + salary + '\'' +
 				", jobState='" + jobState + '\'' +
 				", searchTerm='" + searchTerm + '\'' +
-				", companyLocation='" + companyLocation + '\'' +
 				'}';
 	}
 

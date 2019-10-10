@@ -1,13 +1,16 @@
 package co.aisaac.jobsort;
 
 import co.aisaac.jobsort.pojo.Company;
+import co.aisaac.jobsort.pojo.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -58,5 +61,23 @@ public class JobController {
 		return new ModelAndView("index", model);
 	}
 
+	@GetMapping("add-job")
+	public ModelAndView addJob(Map<String, Object> model){
+		return new ModelAndView("add-job", model);
+	}
 
+	@PostMapping("add-job")
+	public ModelAndView postJob(Map<String, Object> model,
+	                            Job job){
+		job.setSearchTerm("No Search Term");
+		job.setPostDate("");
+		try {
+			jobService.insertJob(job);
+		} catch (SQLException e) {
+			// todo do something here, return a model with an error and a job
+			// todo so we can try again
+			e.printStackTrace();
+		}
+		return new ModelAndView("add-job", model);
+	}
 }

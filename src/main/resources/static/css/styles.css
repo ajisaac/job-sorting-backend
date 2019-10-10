@@ -38,10 +38,11 @@ input[type="text"] {
     color: #551A8B;
 }
 
-a.selected{
+a.selected {
     color: #551A8B;
 }
-a.not-selected{
+
+a.not-selected {
     color: #0000EE;
 }
 
@@ -156,4 +157,47 @@ textarea {
 
 .block-title-header {
     margin-bottom: 10px;
+}
+
+.root {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.add-job {
+    width: 1535px;
+}
+
+.add-job form {
+    overflow: hidden;
+    max-width: 400px;
+}
+
+.add-job p {
+    margin: 10px;
+}
+
+.add-job input, .add-job select {
+    float: right;
+    width: 250px;
+}
+
+.add-job input[type="submit"]{
+    width: 263px;
+}
+
+.add-job select{
+    margin-bottom: 10px;
+    width: 263px;
+}
+
+.nav {
+    display: flex;
+    justify-content: center;
+}
+
+.nav > div {
+    padding: 7px 15px;
+    width: 1535px;
 }

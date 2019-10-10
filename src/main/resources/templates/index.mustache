@@ -1,21 +1,19 @@
 {{>header}}
-<body>
-<div class="root">
-    <div class="main">
-        <div class="main-panel panel">
-            {{>header-controls}}
-            {{#companies}}
-                {{>company}}
-            {{/companies}}
-        </div>
-        <div class="side-panel panel">
-            {{>previous-searches}}
-            {{>label-filter}}
-            {{>title-filter}}
-            {{>blacklisted-companies}}
-        </div>
+<div class="main">
+    <div class="main-panel panel">
+        {{>header-controls}}
+        {{#companies}}
+            {{>company}}
+        {{/companies}}
     </div>
-
+    <div class="side-panel panel">
+        {{>previous-searches}}
+        {{>label-filter}}
+        {{>title-filter}}
+        {{>blacklisted-companies}}
+    </div>
+</div>
 </div>
 </body>
+<script src="/js/index.js"></script>
 </html>

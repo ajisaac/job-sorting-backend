@@ -68,12 +68,6 @@ public class JobsListFromDatabase {
 				} else {
 					job.setSearchTerm(rs.getString("search_term"));
 				}
-				if (rs.getString("company_location") == null) {
-					job.setCompanyLocation("unknown - unknown");
-				} else {
-					job.setCompanyLocation(rs.getString("company_location"));
-				}
-
 				l.add(job);
 			}
 		} catch (SQLException e) {

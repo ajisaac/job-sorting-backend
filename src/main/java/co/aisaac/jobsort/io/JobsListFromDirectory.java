@@ -58,8 +58,6 @@ public class JobsListFromDirectory {
 			final String properSearchTerm = String.join(" - ", term, properLocation);
 
 			j.forEach(job -> {
-				String compLocation = job.getCompany() + " - " + location;
-				job.setCompanyLocation(compLocation);
 				job.setSearchTerm(properSearchTerm);
 			});
 

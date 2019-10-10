@@ -6,21 +6,24 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * Update the jobs in the database.
- */
-public class UpdateJobIntoDatabase {
-	Job job;
+public class InsertJobIntoDatabase {
+	private final Job job;
 
-	public UpdateJobIntoDatabase(Job j) {
-		this.job = j;
+	public InsertJobIntoDatabase(Job job) {
+		this.job = job;
 	}
 
-	public void update() {
+	/**
+	 * Perform the actual insertion.
+	 */
+	public void insert() throws SQLException {
+		if (job == null) {
+			return;
+		}
 
 		try (Connection connection = Database.getConnection()) {
-			String s = "UPDATE IGNORE job SET url=?, summary=? ,company=? ,location=?" +
-					" ,postdate=? ,salary=? ,jobstate=? ,title=?, search_term=? WHERE id=?";
+			String s = "INSERT IGNORE INTO job (url ,summary ,company ,location ,postdate ,salary ,jobstate ,title,  search_term)" +
+					" VALUES (?,?,?,?,?,?,?,?,?)";
 
 			PreparedStatement statement = connection.prepareStatement(s);
 
@@ -37,11 +40,12 @@ public class UpdateJobIntoDatabase {
 			}
 			statement.setString(8, job.getTitle());
 			statement.setString(9, job.getSearchTerm());
-			statement.setLong(10, job.getId());
 
 			statement.execute();
+			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw e;
 		}
 	}
 }
