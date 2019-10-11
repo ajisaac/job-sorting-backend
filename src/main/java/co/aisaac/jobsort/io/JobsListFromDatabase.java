@@ -44,7 +44,7 @@ public class JobsListFromDatabase {
 					job.setLocation(rs.getString("location"));
 				}
 				if (rs.getString("postdate") == null) {
-					job.setPostDate("unknown");
+					job.setPostDate("");
 				} else {
 					job.setPostDate(rs.getString("postdate"));
 				}

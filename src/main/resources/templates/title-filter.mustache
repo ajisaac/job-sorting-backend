@@ -14,6 +14,13 @@
                             checked
             {{/titleFilterChecked}}>
         </label>
+        {{#titleFilterChecked}}
+            <div>
+                <button data-bulk-action="ignore" class="btn-link btn-tiny">
+                    ignore all
+                </button>
+            </div>
+        {{/titleFilterChecked}}
     </div>
     <div class="expandable-content">
         {{#titlefilters}}

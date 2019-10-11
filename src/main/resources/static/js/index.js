@@ -85,6 +85,39 @@ window.onload = function () {
         };
     });
 
+    // our mass ignore button
+    if (document.querySelector("button[data-bulk-action]")) {
+        // click on job state button for the whole page
+        document.querySelector("button[data-bulk-action]").onclick = async function (e) {
+            var ca = e.target;
+            console.log(e);
+            var state = ca.dataset.bulkAction;
+            console.log(ca);
+            if (!ca || !state) throw Error("Missing company or state.");
+            try {
+
+                // get all our job ids
+                var jobs = Array.from(ca.closest(".root").querySelectorAll("div[data-job-id]"));
+
+                var jobIds = jobs.map(function (j) {
+                    var id = j.dataset.jobId;
+                    if (id) {
+                        return id;
+                    }
+                    return 0;
+                });
+
+                var url = '/jobs/multiplestates/' + state;
+                console.log(jobIds.length);
+                // await postData(url, jobIds);
+
+                location.reload();
+            } catch (error) {
+                console.log(error);
+            }
+        };
+    }
+
     // edit the contents of a job
     document.querySelectorAll("button[data-job-edit]").forEach(function (eb) {
         eb.onclick = function () {

@@ -85,7 +85,42 @@ window.onload = () => {
         }
     });
 
-    // edit the contents of a job
+    // our mass ignore button
+    if (document.querySelector("button[data-bulk-action]")) {
+        // click on job state button for the whole page
+        document.querySelector("button[data-bulk-action]").onclick = async (e) => {
+            let ca = e.target;
+            console.log(e);
+            let state = ca.dataset.bulkAction;
+            console.log(ca);
+            if (!ca || !state) throw Error("Missing company or state.");
+            try {
+
+                // get all our job ids
+                let jobs = Array.from(ca.closest(".root").querySelectorAll("div[data-job-id]"));
+
+                let jobIds = jobs.map(j => {
+                    let id = j.dataset.jobId;
+                    if (id) {
+                        return id;
+                    }
+                    return 0;
+                });
+
+                let url = '/jobs/multiplestates/' + state;
+                console.log(jobIds.length);
+                // await postData(url, jobIds);
+
+                location.reload();
+            } catch (error) {
+                console.log(error);
+            }
+
+        };
+    }
+
+
+// edit the contents of a job
     document.querySelectorAll("button[data-job-edit]").forEach(eb => {
         eb.onclick = () => {
             try {
@@ -177,7 +212,7 @@ window.onload = () => {
         }
     });
 
-    // blacklist a company
+// blacklist a company
     document.querySelectorAll("button[data-company]").forEach(bl => {
         bl.onclick = async () => {
             try {
@@ -195,7 +230,7 @@ window.onload = () => {
         }
     });
 
-    // remove a blacklisted company
+// remove a blacklisted company
     document.querySelectorAll("button[data-remove-blacklisted-company]").forEach(rblc => {
         rblc.onclick = async () => {
             try {
@@ -212,7 +247,7 @@ window.onload = () => {
         };
     });
 
-    // click the include button for the title filter search pane
+// click the include button for the title filter search pane
     document.querySelector("input[name='blockTitleChecked']").onclick = async (e) => {
         try {
 
@@ -229,7 +264,7 @@ window.onload = () => {
 
     };
 
-    // select one of the label filter inputs
+// select one of the label filter inputs
     document.querySelectorAll("input[data-label-filter]").forEach(dlf => {
         dlf.onclick = async () => {
             try {
@@ -289,4 +324,5 @@ window.onload = () => {
         return response;
     }
 
-};
+}
+;

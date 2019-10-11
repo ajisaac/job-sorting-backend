@@ -282,6 +282,10 @@ public class JobService {
 
 	public void insertJob(Job job) throws SQLException {
 		new InsertJobIntoDatabase(job).insert();
+
+		long id = new GetJobIdFromDatabase(job).query();
+		job.setId(id);
+
 		this.jobs.get(job.getJobState()).add(job);
 	}
 }
