@@ -1,28 +1,22 @@
-### Simple job sorting backend
+### Simple job sorting 
 A simple application to assist with my job search.
 
-Meant to be run locally alongside the [job-sorting-frontend](https://github.com/ajisaac/job-sorting-frontned).
+##### Status
+Work in major progress, at prototype level, so major changes happen frequently.
 
-Just pull it down, build it<br>
-`mvn package`<br>
-
-Run it like<br>
-`java -jar target/job-backend-1.0.0.jar server local.yml`
-
-Should change some of the hardcoded urls particularly in `Database.java`<br>
-where you'll also want to set up your database and alter the class as<br>
-is necessary. 
-
+##### Running
+Is standard Spring boot. <br>
+Should run the javascript portion through babel. <br>
+There's a few hardcoded strings, this isn't meant for public consumption yet.<br>
 The `MARIADB_CREDS` is just an environment variable local to your machine.<br>
-
-There's one string in `JobService.java` that should be updated to a<br>
-directory where you'll store the input files.
+There's also a directory string, just grep for `/home/aaron`.
 
 ***
 ##### Input Files
+Subject to change, just check the code at `JobsListFromDirectory.java` to see how it loads the data.<br>
+There's a particular naming format for input files. //todo specify this
 The input is directory, in that directory are a bunch of `.json` files.<br>
-You need to provide your own data. This application doesn't gather input<br>
-besides what you supply to it through your input directory.<br>
+You need to provide your own data. <br>
 For example, a file sitting in your input directory that looks something like:
 ```json
 [
@@ -48,10 +42,10 @@ For example, a file sitting in your input directory that looks something like:
 ```
 
 The app will parse these files when it loads, pop them into the database,<br>
-removing duplicates, using the url as a key.
+removing duplicates, using a hashcode to determine uniqueness. //todo update
 
 
-The schema contains a single table that looks like
+The schema contains a single table that looks like this, but changes a lot.
 ```mariadb
 create table job
 (
