@@ -1,5 +1,5 @@
 ### Simple job sorting 
-A simple application to assist with my job search.
+Recruiters have applicant tracking systems, so there should be the reverse, a system to track job applications/companies. For people who need a bit more functionality than a spreadsheet. Also makes it tons easier to organize job postings. WIP.
 
 ##### Status
 Work in major progress, at prototype level, so major changes happen frequently.
