@@ -26,18 +26,18 @@ public class JobService {
 	private Map<String, Boolean> labels = new HashMap<>();
 
 	// inferred this from our jobs list
-	private Map<String, Boolean> previousSearches = new HashMap<>();
+	private Map<String, Boolean> previousSearches;
 
 	// these are stored
-	private List<String> titleFitlers = new ArrayList<>();
+	private List<String> titleFitlers;
 	private boolean titleFilterChecked = false;
 
 	// these are stored
-	private List<String> blackListedCompanies = new ArrayList<>();
+	private List<String> blackListedCompanies;
 
-	private List<String> titleTerms = new ArrayList<>();
-	private List<String> companyTerms = new ArrayList<>();
-	private List<String> searchTerms = new ArrayList<>();
+	private String titleSearchTerm = "";
+	private String companySearchTerm = "";
+	private String descriptionSearchTerm = "";
 
 	public JobService() {
 
@@ -100,7 +100,8 @@ public class JobService {
 				.map(e -> new Company(e.getKey(), e.getValue()))
 				.collect(Collectors.toList());
 
-		// get the checked label filters
+
+		// 2.5 get rid of companies that don't match the filters label filters
 		List<String> f = this.labels
 				.entrySet().stream()
 				.filter(Map.Entry::getValue)
@@ -108,8 +109,6 @@ public class JobService {
 				.collect(Collectors.toList());
 
 		if (f.size() != 0) {
-
-			// 2.5 get rid of companies that don't match the filters label filters
 			companies = companies.stream()
 					.filter(company -> {
 						for (String s : company.getLabels()) {
@@ -127,8 +126,27 @@ public class JobService {
 				.filter(company -> !blackListedCompanies.contains(company.getName()))
 				.collect(Collectors.toList());
 
-		// 4 further filter by jobState
-		if (!filter.equals("")) {
+
+		// SEARCH FILTERS
+		// company search term
+		companySearchTerm = companySearchTerm.toLowerCase().trim();
+		if (!companySearchTerm.isBlank())
+			companies = companies.stream()
+					.filter(company -> company.getName().toLowerCase().trim().contains(companySearchTerm))
+					.collect(Collectors.toList());
+
+		// title search term
+		if (!titleSearchTerm.isBlank()) {
+			companies.forEach(company -> company.applyTitleSearchTerm(titleSearchTerm));
+		}
+
+		// description search term
+		if (!descriptionSearchTerm.isBlank()) {
+			companies.forEach(company -> company.applyDescriptionSearchTerm(descriptionSearchTerm));
+		}
+
+		// 4 further filter by jobState label
+		if (!filter.isBlank()) {
 			companies.forEach(company -> company.filter(filter));
 		}
 
@@ -158,6 +176,7 @@ public class JobService {
 			String blackListedCompany = blackListedCompanies.get(i);
 			if (blackListedCompany.equalsIgnoreCase(companyName)) {
 				blackListedCompanies.remove(blackListedCompany);
+				break;
 			}
 		}
 	}
@@ -172,6 +191,18 @@ public class JobService {
 
 	public Map<String, Boolean> getLabels() {
 		return labels;
+	}
+
+	public String getTitleSearchTerm() {
+		return titleSearchTerm;
+	}
+
+	public String getCompanySearchTerm() {
+		return companySearchTerm;
+	}
+
+	public String getDescriptionSearchTerm() {
+		return descriptionSearchTerm;
 	}
 
 	public List<String> getTitleFilters() {
@@ -287,5 +318,22 @@ public class JobService {
 		job.setId(id);
 
 		this.jobs.get(job.getJobState()).add(job);
+	}
+
+	public void setPreviousSearchChecked(String search, boolean checked) {
+
+		//todo implement
+	}
+
+	public void setTitleSearchTerm(String titleSearchTerm) {
+		this.titleSearchTerm = titleSearchTerm;
+	}
+
+	public void setCompanySearchTerm(String companySearchTerm) {
+		this.companySearchTerm = companySearchTerm;
+	}
+
+	public void setDescriptionSearchTerm(String descriptionSearchTerm) {
+		this.descriptionSearchTerm = descriptionSearchTerm;
 	}
 }

@@ -22,8 +22,8 @@ public class InsertJobIntoDatabase {
 		}
 
 		try (Connection connection = Database.getConnection()) {
-			String s = "INSERT IGNORE INTO job (url ,summary ,company ,location ,postdate ,salary ,jobstate ,title,  search_term)" +
-					" VALUES (?,?,?,?,?,?,?,?,?)";
+			String s = "INSERT IGNORE INTO job (url ,summary ,company ,location ,postdate ,salary ,jobstate ,title,  search_term, hash_code)" +
+					" VALUES (?,?,?,?,?,?,?,?,?,?)";
 
 			PreparedStatement statement = connection.prepareStatement(s);
 
@@ -40,6 +40,7 @@ public class InsertJobIntoDatabase {
 			}
 			statement.setString(8, job.getTitle());
 			statement.setString(9, job.getSearchTerm());
+			statement.setInt(10, job.hashCode());
 
 			statement.execute();
 			statement.close();

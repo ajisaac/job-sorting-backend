@@ -2,6 +2,36 @@
 
 window.onload = function () {
 
+    // search by title
+    document.querySelector("input[data-title-search-input]").onchange = async function (e) {
+        console.log("title change: " + e.target.value);
+        await runSearch(e, "title");
+    };
+
+    document.querySelector("input[data-company-search-input]").onchange = async function (e) {
+        console.log("company change: " + e.target.value);
+        await runSearch(e, "company");
+    };
+
+    document.querySelector("input[data-description-search-input]").onchange = async function (e) {
+        console.log("description change: " + e.target.value);
+        await runSearch(e, "description");
+    };
+
+    async function runSearch(e, type) {
+        try {
+            var searchTerm = e.target.value;
+            if (searchTerm.trim() === "") searchTerm = "blank";
+
+            var url = '/jobs/searchterm/' + type + "/" + searchTerm;
+            await postData(url, {});
+
+            location.reload();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     // hide show contents of a company
     document.querySelectorAll("div.company-name-bar > h3").forEach(function (title) {
         title.onclick = function () {
@@ -109,8 +139,7 @@ window.onload = function () {
 
                 var url = '/jobs/multiplestates/' + state;
                 console.log(jobIds.length);
-                // await postData(url, jobIds);
-
+                await postData(url, jobIds);
                 location.reload();
             } catch (error) {
                 console.log(error);

@@ -1,6 +1,38 @@
 window.onload = () => {
 
-    // hide show contents of a company
+    // search by title
+    document.querySelector("input[data-title-search-input]").onchange = async (e) => {
+        console.log("title change: " + e.target.value);
+        await runSearch(e, "title");
+    };
+
+    document.querySelector("input[data-company-search-input]").onchange = async (e) => {
+        console.log("company change: " + e.target.value);
+        await runSearch(e, "company");
+    };
+
+    document.querySelector("input[data-description-search-input]").onchange = async (e) => {
+        console.log("description change: " + e.target.value);
+        await runSearch(e, "description");
+    };
+
+    async function runSearch(e, type) {
+        try {
+            let searchTerm = e.target.value;
+            if (searchTerm.trim() === "") searchTerm = "blank";
+
+            let url = '/jobs/searchterm/' + type + "/" + searchTerm;
+            await postData(url, {});
+
+            location.reload();
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+// hide show contents of a company
     document.querySelectorAll("div.company-name-bar > h3").forEach(title => {
         title.onclick = () => {
             let content = title.closest("div.company-name-bar").nextElementSibling;
@@ -17,7 +49,7 @@ window.onload = () => {
         }
     });
 
-    // hide show search pane contents
+// hide show search pane contents
     document.querySelectorAll(".search-pane").forEach(eb => {
         let title = eb.querySelector("h4.expandable");
         if (title !== null) {
@@ -35,7 +67,7 @@ window.onload = () => {
         }
     });
 
-    // click on job state button for job
+// click on job state button for job
     document.querySelectorAll("button[data-job-action]").forEach(sb => {
         let state = sb.dataset.jobAction;
         sb.onclick = async () => {
@@ -56,7 +88,7 @@ window.onload = () => {
         }
     });
 
-    // click on job state button for company
+// click on job state button for company
     document.querySelectorAll("button[data-company-action]").forEach(ca => {
         ca.onclick = async () => {
             let state = ca.dataset.companyAction;
@@ -85,7 +117,7 @@ window.onload = () => {
         }
     });
 
-    // our mass ignore button
+// our mass ignore button
     if (document.querySelector("button[data-bulk-action]")) {
         // click on job state button for the whole page
         document.querySelector("button[data-bulk-action]").onclick = async (e) => {
@@ -109,8 +141,7 @@ window.onload = () => {
 
                 let url = '/jobs/multiplestates/' + state;
                 console.log(jobIds.length);
-                // await postData(url, jobIds);
-
+                await postData(url, jobIds);
                 location.reload();
             } catch (error) {
                 console.log(error);
@@ -118,7 +149,6 @@ window.onload = () => {
 
         };
     }
-
 
 // edit the contents of a job
     document.querySelectorAll("button[data-job-edit]").forEach(eb => {
@@ -324,5 +354,4 @@ window.onload = () => {
         return response;
     }
 
-}
-;
+};

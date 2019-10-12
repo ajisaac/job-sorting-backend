@@ -36,6 +36,9 @@ public class JobController {
 			companies = jobService.getCompanies(filter);
 		}
 
+		model.put("descriptionSearchTerm", jobService.getDescriptionSearchTerm());
+		model.put("companySearchTerm", jobService.getCompanySearchTerm());
+		model.put("titleSearchTerm", jobService.getTitleSearchTerm());
 		model.put("titleFilterChecked", jobService.isTitleFilterChecked());
 		model.put(filter, filter);
 		model.put("state", filter.toUpperCase());
@@ -62,13 +65,13 @@ public class JobController {
 	}
 
 	@GetMapping("add-job")
-	public ModelAndView addJob(Map<String, Object> model){
+	public ModelAndView addJob(Map<String, Object> model) {
 		return new ModelAndView("add-job", model);
 	}
 
 	@PostMapping("add-job")
 	public ModelAndView postJob(Map<String, Object> model,
-	                            Job job){
+	                            Job job) {
 		job.setSearchTerm("No Search Term");
 		job.setPostDate("");
 		try {

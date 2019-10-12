@@ -35,6 +35,24 @@ public class Company {
 		}
 	}
 
+	public void applyTitleSearchTerm(String titleSearchTerm) {
+		// for each job, include if we match the search term
+		this.jobs = this.jobs.stream()
+				.filter(job -> job.getTitle().toLowerCase().contains(
+						titleSearchTerm.trim().toLowerCase())
+				)
+				.collect(Collectors.toList());
+	}
+
+	public void applyDescriptionSearchTerm(String descriptionSearchTerm) {
+		// for each job, include if we match the description search term
+		this.jobs = this.jobs.stream()
+				.filter(job -> job.getSummary().toLowerCase().contains(
+						descriptionSearchTerm.trim().toLowerCase())
+				)
+				.collect(Collectors.toList());
+	}
+
 	// remove the jobs that don't have this state
 	public void filter(String filter) {
 		this.jobs = this.jobs.stream()
