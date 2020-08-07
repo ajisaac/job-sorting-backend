@@ -1,3 +1,3 @@
-## Scrape Batch Controller 
+# Deprecated - Replaced with go
 
-This ties all the backend together to be used by the frontend.
+Frontend to display the scraped postings.
