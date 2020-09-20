@@ -1,3 +1,3 @@
-# Deprecated - Replaced with go
+# Job Scraper Api
 
-Frontend to display the scraped postings.
+This is the API to access our scraper backend
